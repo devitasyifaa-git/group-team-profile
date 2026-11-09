@@ -23,6 +23,7 @@ Ujian Chunin – Mata Kuliah Cloud Computing, Telkom University
 - **Dosen Pengampu:** CSO
 - **Studi Kasus Dipilih:** **No. 10 – Portofolio & Profil Kelompok (Group Team Profile Showcase)**
 - **Repositori:** https://github.com/devitasyifaa-git/group-team-profile
+- **Video Demo:** https://youtu.be/KsUL_H8C-FQ?si=pZ9JE-ffvEhpNNqd
 
 ---
 
@@ -360,13 +361,7 @@ Jika syntax error atau health check gagal, pipeline berhenti dengan status **mer
 
 ---
 
-## 🎬 11. Video Demo
-
-📺 **Tautan Video :** https://youtu.be/KsUL_H8C-FQ?si=pZ9JE-ffvEhpNNqd
-
----
-
-## 🩺 12. Troubleshooting
+## 🩺 11. Troubleshooting
 
 | Masalah | Solusi |
 |---------|--------|
