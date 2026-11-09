@@ -1,0 +1,89 @@
+
+services:
+
+  # =====================================
+  # BACKEND SERVICE
+  # =====================================
+
+  backend:
+
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: group-team-profile-backend
+
+    environment:
+      DATA_FILE: /var/lib/backend_data/team_members.json
+      PYTHONUNBUFFERED: "1"
+
+    volumes:
+      - team-profile-data:/var/lib/backend_data
+
+    expose:
+      - "5000"
+
+    networks:
+      - app-net
+
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health')"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+    restart: unless-stopped
+
+
+  # =====================================
+  # FRONTEND SERVICE
+  # =====================================
+
+  frontend:
+
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: group-team-profile-frontend
+
+    ports:
+      - "8081:80"
+
+    volumes:
+      - "./frontend:/usr/share/nginx/html:ro"
+
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    networks:
+      - app-net
+
+    restart: unless-stopped
+
+
+# =====================================
+# DOCKER NAMED VOLUME
+# =====================================
+
+volumes:
+
+  team-profile-data:
+    name: team-profile-data
+
+
+# =====================================
+# CUSTOM BRIDGE NETWORK
+# =====================================
+
+networks:
+
+  app-net:
+    name: app-net
+    driver: bridge

@@ -1,0 +1,21 @@
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local test data
+data/
+
+# Logs
+*.log
+
+# Operating system
+.DS_Store
+Thumbs.db
