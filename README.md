@@ -381,4 +381,4 @@ Jika syntax error atau health check gagal, pipeline berhenti dengan status **mer
 
 ---
 
-<p align="center">Dibuat oleh Kelompok H· Telkom University · Cloud Computing 2026</p>
+<p align="center">Dibuat oleh Kelompok H · Telkom University · Cloud Computing 2026</p>
