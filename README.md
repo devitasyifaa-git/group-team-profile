@@ -28,7 +28,7 @@ Ujian Chunin – Mata Kuliah Cloud Computing, Telkom University
 
 ## 📖 2. Deskripsi Proyek
 
-Aplikasi web fullstack untuk menampilkan **profil anggota kelompok beserta keahlian (skill)**. Pengguna dapat melihat kartu profil, menambah anggota baru melalui form, dan menghapus anggota secara real-time tanpa refresh halaman.
+Aplikasi web fullstack untuk menampilkan **profil anggota kelompok beserta keahlian (skill)**. Pengguna dapat melihat kartu profil (dengan foto), menambah anggota baru beserta foto profil melalui form, dan menghapus anggota secara real-time tanpa refresh halaman.
 
 Fokus proyek ini adalah penerapan arsitektur *cloud-native* dan DevOps:
 
@@ -160,17 +160,19 @@ API diakses **melalui frontend (reverse proxy)**: `http://localhost:8081/api`
   "nim": "1234567890",
   "role": "Backend Developer",
   "bio": "Deskripsi singkat (opsional)",
+  "photo": "data:image/jpeg;base64,... (opsional)",
   "skills": ["Python", "Docker"]
 }
 ```
 
-> `name`, `nim`, dan `role` **wajib** diisi. `skills` boleh berupa array atau string dipisah koma. Field `created_at` ditambahkan otomatis oleh server.
+> `name`, `nim`, dan `role` **wajib** diisi. `photo` bersifat opsional (data URL PNG/JPEG/WebP; foto diperkecil otomatis oleh browser ke maks. 320 px sebelum dikirim, lalu disimpan di `team_members.json` pada Named Volume). `skills` boleh berupa array atau string dipisah koma. Field `created_at` ditambahkan otomatis oleh server.
 
 **Error handling:**
 
 | Kode | Kondisi |
 |------|---------|
-| `400 Bad Request` | Body kosong / bukan JSON valid / bukan object; `name`, `nim`, `role` kosong; `skills` tidak valid; parameter `index` hilang atau bukan angka |
+| `400 Bad Request` | Body kosong / bukan JSON valid / bukan object; `name`, `nim`, `role` kosong; `skills` tidak valid; `photo` bukan gambar base64 yang valid atau terlalu besar; parameter `index` hilang atau bukan angka |
+| `413 Payload Too Large` | Body request melebihi 1 MB |
 | `404 Not Found` | Endpoint tidak dikenal atau `index` di luar jangkauan |
 
 **Contoh penggunaan (curl):**
@@ -382,6 +384,14 @@ Isi video:
 | `Bind for 0.0.0.0:8080 failed: port is already allocated` | Port `8080` dipakai Jenkins. Aplikasi memakai port `8081` |
 | `docker: unknown command: docker compose` di Jenkins | Pasang plugin Compose di kontainer Jenkins (bagian 10.0) |
 | Stage Health Check gagal pada `curl` | Pastikan port `8081` dapat dijangkau dari Jenkins (`host.docker.internal:8081` bila Jenkins berjalan di kontainer) |
+
+---
+
+## ✅ 13. Checklist Deliverables
+
+- [x] Repositori GitHub (`app.py`, `index.html`, `Dockerfile`, `docker-compose.yml`, `Jenkinsfile`)
+- [x] `README.md` (Nama & NIM, studi kasus, diagram arsitektur, instalasi lokal & Jenkins)
+- [ ] Video demo 5–8 menit (isi tautan di bagian 11)
 
 ---
 

@@ -1,0 +1,9 @@
+# Override khusus development lokal (Bind Mount untuk live-edit frontend).
+# Jalankan:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+# Jangan dipakai oleh Jenkins (Jenkins memakai docker-compose.yml saja).
+
+services:
+  frontend:
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
