@@ -1,4 +1,3 @@
-
 // ==========================================
 // API CONFIGURATION
 // ==========================================
@@ -19,6 +18,9 @@ const roleCount = document.getElementById("roleCount");
 
 const formMessage = document.getElementById("formMessage");
 const submitButton = document.getElementById("submitButton");
+
+const photoInput = document.getElementById("photo");
+const photoPreview = document.getElementById("photoPreview");
 
 
 // ==========================================
@@ -51,6 +53,84 @@ function getInitials(name) {
         .join("")
         .toUpperCase();
 }
+
+
+// Resize image in the browser and return it as a JPEG data URL
+function resizeImage(file, maxSize = 320) {
+
+    return new Promise((resolve, reject) => {
+
+        if (!file.type.startsWith("image/")) {
+            reject(new Error("Please choose an image file."));
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onerror = () => reject(new Error("Failed to read the photo."));
+
+        reader.onload = () => {
+
+            const img = new Image();
+
+            img.onerror = () => reject(new Error("Invalid image file."));
+
+            img.onload = () => {
+
+                const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+
+                const canvas = document.createElement("canvas");
+
+                canvas.width = Math.round(img.width * scale);
+                canvas.height = Math.round(img.height * scale);
+
+                canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                resolve(canvas.toDataURL("image/jpeg", 0.85));
+            };
+
+            img.src = reader.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+
+
+function resetPhotoPreview() {
+
+    photoPreview.hidden = true;
+
+    photoPreview.removeAttribute("src");
+}
+
+
+photoInput.addEventListener("change", async () => {
+
+    const file = photoInput.files[0];
+
+    if (!file) {
+        resetPhotoPreview();
+        return;
+    }
+
+    try {
+
+        photoPreview.src = await resizeImage(file);
+
+        photoPreview.hidden = false;
+
+    } catch (error) {
+
+        resetPhotoPreview();
+
+        photoInput.value = "";
+
+        formMessage.textContent = error.message;
+
+        formMessage.className = "form-message error";
+    }
+});
 
 
 function setApiStatus(online) {
@@ -139,11 +219,27 @@ function renderMembers() {
             "member-top"
         );
 
-        const avatar = createElement(
-            "div",
-            "member-avatar",
-            getInitials(member.name)
-        );
+        let avatar;
+
+        if (member.photo) {
+
+            avatar = createElement(
+                "img",
+                "member-avatar member-avatar-photo"
+            );
+
+            avatar.src = member.photo;
+
+            avatar.alt = "Photo of " + member.name;
+
+        } else {
+
+            avatar = createElement(
+                "div",
+                "member-avatar",
+                getInitials(member.name)
+            );
+        }
 
         const identity = createElement(
             "div",
@@ -357,6 +453,12 @@ memberForm.addEventListener("submit", async function(event) {
 
     try {
 
+        const photoFile = photoInput.files[0];
+
+        if (photoFile) {
+            payload.photo = await resizeImage(photoFile);
+        }
+
         const response = await fetch(
             `${API_BASE}/members`,
             {
@@ -383,6 +485,8 @@ memberForm.addEventListener("submit", async function(event) {
 
 
         memberForm.reset();
+
+        resetPhotoPreview();
 
         formMessage.textContent = "Member added successfully!";
 

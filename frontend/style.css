@@ -1,4 +1,3 @@
-
 /* =================================
    GLOBAL CONFIGURATION
 ================================= */
@@ -390,6 +389,19 @@ textarea {
     display: flex;
     align-items: center;
     gap: 13px;
+}
+
+.member-avatar-photo {
+    object-fit: cover;
+    display: block;
+}
+
+.photo-preview {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 18px;
+    margin-top: 10px;
 }
 
 .member-avatar {

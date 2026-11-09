@@ -1,8 +1,9 @@
-
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from datetime import datetime, timezone
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
+import base64
+import binascii
 import json
 import os
 
@@ -17,6 +18,35 @@ DATA_FILE = Path(
         "/var/lib/backend_data/team_members.json"
     )
 )
+
+
+# ==========================================
+# BATASAN UPLOAD FOTO
+# ==========================================
+
+MAX_BODY_BYTES = 1_000_000
+MAX_PHOTO_CHARS = 400_000
+
+PHOTO_PREFIXES = (
+    "data:image/jpeg;base64,",
+    "data:image/png;base64,",
+    "data:image/webp;base64,"
+)
+
+
+def is_valid_photo(photo):
+
+    if not photo.startswith(PHOTO_PREFIXES):
+        return False
+
+    encoded = photo.split(",", 1)[1]
+
+    try:
+        base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError):
+        return False
+
+    return True
 
 
 # ==========================================
@@ -176,6 +206,12 @@ class APIHandler(BaseHTTPRequestHandler):
                     {"error": "Request body is required"}
                 )
 
+            if length > MAX_BODY_BYTES:
+                return self.send_json(
+                    413,
+                    {"error": "Request body is too large"}
+                )
+
             payload = json.loads(
                 self.rfile.read(length).decode("utf-8")
             )
@@ -204,6 +240,8 @@ class APIHandler(BaseHTTPRequestHandler):
             ).strip()
 
             skills = payload.get("skills", [])
+
+            photo = payload.get("photo", "")
 
             if not name or not nim or not role:
 
@@ -234,11 +272,34 @@ class APIHandler(BaseHTTPRequestHandler):
                     }
                 )
 
+            if photo is None:
+                photo = ""
+
+            if not isinstance(photo, str):
+
+                return self.send_json(
+                    400,
+                    {"error": "Photo must be a string"}
+                )
+
+            if photo and (
+                len(photo) > MAX_PHOTO_CHARS
+                or not is_valid_photo(photo)
+            ):
+
+                return self.send_json(
+                    400,
+                    {
+                        "error": "Photo must be a valid PNG, JPEG, or WebP image (max ~300 KB)"
+                    }
+                )
+
             member = {
                 "name": name,
                 "nim": nim,
                 "role": role,
                 "bio": bio,
+                "photo": photo,
                 "skills": [
                     skill.strip() for skill in skills
                 ],

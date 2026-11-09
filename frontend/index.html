@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -230,6 +229,29 @@
                                 placeholder="Example: Frontend Developer"
                                 maxlength="80"
                                 required
+                            >
+                        </label>
+
+
+                        <label class="full-width">
+                            Profile Photo (optional)
+
+                            <input
+                                type="file"
+                                id="photo"
+                                name="photo"
+                                accept="image/png,image/jpeg,image/webp"
+                            >
+
+                            <small>
+                                PNG, JPG, or WebP. The photo is resized automatically.
+                            </small>
+
+                            <img
+                                id="photoPreview"
+                                class="photo-preview"
+                                alt="Photo preview"
+                                hidden
                             >
                         </label>
 
