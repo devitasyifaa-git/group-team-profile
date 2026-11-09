@@ -362,7 +362,7 @@ Jika syntax error atau health check gagal, pipeline berhenti dengan status **mer
 
 ## 🎬 11. Video Demo
 
-📺 **Tautan Video :** `https://youtu.be/gZHZAaDWtXM?si=TK7prMkqYWA6mBPe`
+📺 **Tautan Video :** https://youtu.be/KsUL_H8C-FQ?si=pZ9JE-ffvEhpNNqd
 
 ---
 
