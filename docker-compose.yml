@@ -55,9 +55,6 @@ services:
     ports:
       - "8081:80"
 
-    volumes:
-      - "./frontend:/usr/share/nginx/html:ro"
-
     depends_on:
       backend:
         condition: service_healthy
