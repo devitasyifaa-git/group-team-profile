@@ -10,7 +10,7 @@ Ujian Chunin – Mata Kuliah Cloud Computing, Telkom University
 
 ---
 
-## 📌 1. Identitas Kelompok
+## 📌 1. Identitas Kelompok H
 
 | No | Nama Lengkap | NIM | Peran |
 |----|--------------|-----|-------|
@@ -362,13 +362,7 @@ Jika syntax error atau health check gagal, pipeline berhenti dengan status **mer
 
 ## 🎬 11. Video Demo
 
-📺 **Tautan Video (5–8 menit):** `[tempel link YouTube / Google Drive di sini]`
-
-Isi video:
-
-1. Demo UI & API (lihat, tambah, hapus anggota)
-2. Simulasi **Data Immunity** (`docker rm -f group-team-profile-backend` → data tetap ada)
-3. Simulasi **CI/CD**: ubah kode → `git push origin main` → Jenkins ter-trigger otomatis → 5 stage hijau → aplikasi ter-update
+📺 **Tautan Video :** `https://youtu.be/gZHZAaDWtXM?si=TK7prMkqYWA6mBPe`
 
 ---
 
@@ -384,14 +378,6 @@ Isi video:
 | `Bind for 0.0.0.0:8080 failed: port is already allocated` | Port `8080` dipakai Jenkins. Aplikasi memakai port `8081` |
 | `docker: unknown command: docker compose` di Jenkins | Pasang plugin Compose di kontainer Jenkins (bagian 10.0) |
 | Stage Health Check gagal pada `curl` | Pastikan port `8081` dapat dijangkau dari Jenkins (`host.docker.internal:8081` bila Jenkins berjalan di kontainer) |
-
----
-
-## ✅ 13. Checklist Deliverables
-
-- [x] Repositori GitHub (`app.py`, `index.html`, `Dockerfile`, `docker-compose.yml`, `Jenkinsfile`)
-- [x] `README.md` (Nama & NIM, studi kasus, diagram arsitektur, instalasi lokal & Jenkins)
-- [ ] Video demo 5–8 menit (isi tautan di bagian 11)
 
 ---
 
